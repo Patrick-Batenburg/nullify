@@ -1,0 +1,44 @@
+name: All builds
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      TERM: dumb
+    strategy:
+      matrix:
+        go_version:
+          - stable
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go_version }}
+
+      - name: Install dependencies
+        run: chmod +x .ci.install-tools.sh && ./.ci.install-tools.sh
+
+      - name: Format code
+        run: chmod +x .ci.gofmt.sh && ./.ci.gofmt.sh
+
+      - name: Run Go build
+        run: go build -v ./...
+
+      - name: Run unit tests with coverage
+        run: chmod +x .ci.gotest.sh && ./.ci.gotest.sh
+
+  golangci:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.60

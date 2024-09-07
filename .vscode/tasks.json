@@ -1,0 +1,79 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Install dependencies",
+            "type": "shell",
+            "options": {
+                "shell": {
+                    "executable": "bash",
+                    "args": [
+                        "-c",
+                    ]
+                }
+            },
+            "command": "./.ci.install-tools.sh",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "runOptions": {
+                "runOn": "default"
+            }
+        },
+        {
+            "label": "Run go formatters, linters and code generators",
+            "type": "shell",
+            "options": {
+                "shell": {
+                    "executable": "bash",
+                    "args": [
+                        "-c",
+                    ]
+                }
+            },
+            "command": "./.ci.gofmt.sh",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "runOptions": {
+                "runOn": "default"
+            }
+        },
+        {
+            "label": "Go test coverage with gotestsum",
+            "type": "shell",
+            "options": {
+                "shell": {
+                    "executable": "bash",
+                    "args": [
+                        "-c",
+                    ]
+                }
+            },
+            "command": "./.ci.gotest.sh",
+            "problemMatcher": [
+                "$go"
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "detail": "Runs `gotestsum ./...` in the ${workspaceFolder} directory"
+        }
+    ]
+}

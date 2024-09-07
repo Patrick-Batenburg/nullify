@@ -1,0 +1,6 @@
+disable-version-string: true
+with-expecter: true
+packages:
+  github.com/Patrick-Batenburg/nullify/null:
+    config:
+      all: true
