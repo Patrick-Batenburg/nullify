@@ -1,0 +1,35 @@
+name: All builds
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go_version:
+          - stable
+          - oldstable
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go_version }}
+
+      - name: Install dependencies
+        run: ./.ci.install-tools.sh
+
+      - name: Format code
+        run: ./.ci.gofmt.sh
+
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          args: --disable-all --enable=gofmt --enable=golint --enable=govet --enable=staticcheck
+
+      - name: Run Go build
+        run: go build -v ./...
+
+      - name: Run unit tests with coverage
+        run: ./.ci.gotest.sh
