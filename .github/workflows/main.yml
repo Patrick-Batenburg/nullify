@@ -24,7 +24,7 @@ jobs:
         run: ./.ci.gofmt.sh
 
       - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v2
+        uses: golangci/golangci-lint-action@v6
         with:
           args: --disable-all --enable=gofmt --enable=golint --enable=govet --enable=staticcheck
 
